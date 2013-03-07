@@ -1,34 +1,63 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Greenplum + R by zimmeee</title>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Greenplum + R : A place for all things related to using the Greenplum Database with R" />
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Greenplum + R</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Greenplum + R</h1>
-        <p>A place for all things related to using the Greenplum Database with R</p>
 
-        <p class="view"><a href="https://github.com/zimmeee/gp-r">View the Project on GitHub <small>zimmeee/gp-r</small></a></p>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/zimmeee/gp-r">View on GitHub</a>
 
+          <h1 id="project_title">Greenplum + R</h1>
+          <h2 id="project_tagline">A place for all things related to using the Greenplum Database with R</h2>
 
-        <ul>
-          <li><a href="https://github.com/zimmeee/gp-r/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/zimmeee/gp-r/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/zimmeee/gp-r">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h3>Welcome to GitHub Pages.</h3>
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/zimmeee/gp-r/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/zimmeee/gp-r/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>Topics covered</h1>
+
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li>Verify parallelization (csv, timing, command center)</li>
+<li>Timing and data distribution</li>
+<li>Installing packages
+
+<ul>
+<li>Notes on permissions (super user)</li>
+<li>Best practices</li>
+<li>Data prep (array_agg)</li>
+<li>return values (composite types)</li>
+<li>UDA/UDF</li>
+<li>RPostgreSQL</li>
+</ul>
+</li>
+<li>Memory limitations</li>
+<li>Persisting R models in database</li>
+<li>Data types (R &lt;--&gt; Postgres)</li>
+<li>Performance testing</li>
+<li>Plotting</li>
+</ul><h3>Overview</h3>
+
+<p>Here is some text</p>
+
+<h3>Welcome to GitHub Pages.</h3>
 
 <p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
 
@@ -59,7 +88,12 @@ $ git checkout gh-pages
 
 <p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
 
-<div class="highlight"><pre><span class="c">m = lm(formula = rings ~ ., data = abalone)</span>
+<div class="highlight"><pre>m <span class="o">=</span> lm<span class="p">(</span>formula <span class="o">=</span> rings <span class="o">~</span> .<span class="p">,</span> data <span class="o">=</span> abalone<span class="p">)</span>
+
+x <span class="o">=</span> readLines<span class="p">(</span>pipe<span class="p">(</span><span class="s">"pbpaste"</span><span class="p">))</span>
+y <span class="o">=</span> table<span class="p">(</span>x<span class="p">)</span>
+barplot<span class="p">(</span> y<span class="p">[</span>order<span class="p">(</span> as.integer<span class="p">(</span>rownames<span class="p">(</span>y<span class="p">))</span> <span class="p">)],</span> xlab<span class="o">=</span><span class="s">'Segment ID'</span><span class="p">,</span> 
+         ylab<span class="o">=</span><span class="s">'Number of rows'</span><span class="p">,</span> main <span class="o">=</span> <span class="s">'Row distribution across segments'</span> <span class="p">)</span>
 </pre></div>
 
 <h3>Rather Drive Stick?</h3>
@@ -70,12 +104,17 @@ $ git checkout gh-pages
 
 <p>This document is a project by Woo Jung (<a href="https://github.com/wjjung317" class="user-mention">@wjjung317</a>) and Noah Zimmerman (<a href="https://github.com/zimmeee" class="user-mention">@zimmeee</a>)</p>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/zimmeee">zimmeee</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Greenplum + R maintained by <a href="https://github.com/zimmeee">zimmeee</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
+
     
+
   </body>
 </html>
