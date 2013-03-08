@@ -4,73 +4,61 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Greenplum + R by zimmeee</title>
+
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
   <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/zimmeee/gp-r">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/zimmeee/gp-r/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/zimmeee/gp-r/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
-
     <div class="wrapper">
+      <header>
+        <h1>Greenplum + R</h1>
+        <p>A place for all things related to using the Greenplum Database with R</p>
 
+        <p class="view"><a href="https://github.com/zimmeee/gp-r">View the Project on GitHub <small>zimmeee/gp-r</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/zimmeee/gp-r/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/zimmeee/gp-r/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/zimmeee/gp-r">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
       <section>
-        <div id="title">
-          <h1>Greenplum + R</h1>
-          <p>A place for all things related to using the Greenplum Database with R</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/zimmeee">zimmeee</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
-        </div>
+        <h1>Topics covered</h1>
 
-        <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#installation">Verify PL/R installation</a></li>
+<li><a href="#parallelization">Verify parallelization</a></li>
+<li><a href="#packages">Installing packages</a></li>
+<li><a href="#permissions">Notes on permissions</a></li>
+<li>
+<a href="#bestpractices">Best practices</a>
 
-<div class="highlight"><pre><span class="k">DROP</span> <span class="k">TABLE</span> <span class="n">IF</span> <span class="k">EXISTS</span> <span class="n">abalone_array</span><span class="p">;</span>
-<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">abalone_array</span> <span class="k">AS</span> 
-<span class="k">SELECT</span> 
-    <span class="n">array_agg</span><span class="p">(</span><span class="n">sex</span><span class="p">)::</span><span class="nb">text</span><span class="p">[]</span> <span class="k">as</span> <span class="n">sex</span><span class="p">,</span> 
-    <span class="n">array_agg</span><span class="p">(</span><span class="k">length</span><span class="p">)::</span><span class="n">float8</span><span class="p">[]</span> <span class="k">as</span> <span class="k">length</span><span class="p">,</span>
-    <span class="n">array_agg</span><span class="p">(</span><span class="n">diameter</span><span class="p">)::</span><span class="n">float8</span><span class="p">[]</span> <span class="k">as</span> <span class="n">diameter</span><span class="p">,</span> 
-    <span class="n">array_agg</span><span class="p">(</span><span class="n">height</span><span class="p">)::</span><span class="n">float8</span><span class="p">[]</span> <span class="k">as</span> <span class="n">height</span><span class="p">,</span>
-    <span class="n">array_agg</span><span class="p">(</span><span class="n">whole_weight</span><span class="p">)::</span><span class="n">float8</span><span class="p">[]</span> <span class="k">as</span> <span class="n">whole_weight</span><span class="p">,</span> 
-    <span class="n">array_agg</span><span class="p">(</span><span class="n">shucked_weight</span><span class="p">)::</span><span class="n">float8</span><span class="p">[]</span> <span class="k">as</span> <span class="n">shucked_weight</span><span class="p">,</span>
-    <span class="n">array_agg</span><span class="p">(</span><span class="n">viscera_weight</span><span class="p">)::</span><span class="n">float8</span><span class="p">[]</span> <span class="k">as</span> <span class="n">viscera_weight</span><span class="p">,</span> 
-    <span class="n">array_agg</span><span class="p">(</span><span class="n">shell_weight</span><span class="p">)::</span><span class="n">float8</span><span class="p">[]</span> <span class="k">as</span> <span class="n">shell_weight</span><span class="p">,</span> 
-    <span class="n">array_agg</span><span class="p">(</span><span class="n">rings</span><span class="p">)::</span><span class="n">float8</span><span class="p">[]</span> <span class="k">as</span> <span class="n">rings</span>
-<span class="k">FROM</span> <span class="n">abalone</span>
-<span class="n">DISTRIBUTED</span> <span class="n">RANDOMLY</span><span class="p">;</span>
-</pre></div>
-
-<h3>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<div class="highlight"><pre>m <span class="o">=</span> lm<span class="p">(</span>formula <span class="o">=</span> rings <span class="o">~</span> .<span class="p">,</span> data <span class="o">=</span> abalone<span class="p">)</span>
-
-x <span class="o">=</span> readLines<span class="p">(</span>pipe<span class="p">(</span><span class="s">"pbpaste"</span><span class="p">))</span>
-y <span class="o">=</span> table<span class="p">(</span>x<span class="p">)</span>
-barplot<span class="p">(</span> y<span class="p">[</span>order<span class="p">(</span> as.integer<span class="p">(</span>rownames<span class="p">(</span>y<span class="p">))</span> <span class="p">)],</span> xlab<span class="o">=</span><span class="s">'Segment ID'</span><span class="p">,</span> 
-         ylab<span class="o">=</span><span class="s">'Number of rows'</span><span class="p">,</span> main <span class="o">=</span> <span class="s">'Row distribution across segments'</span> <span class="p">)</span>
-</pre></div>
+<ul>
+<li><a href="#dataprep">Data prep</a></li>
+<li><a href="#returntypes">Return types</a></li>
+<li><a href="#uda">UDA &amp; UDF</a></li>
+<li><a href="#rpostgresql">RPostgreSQL</a></li>
+</ul>
+</li>
+<li><a href="#memory">Memory limitations</a></li>
+<li><a href="#persistence">Persisting R models in database</a></li>
+<li><a href="#datatypes">Data types</a></li>
+<li><a href="#performance">Performance testing</a></li>
+<li><a href="#plotting">Plotting</a></li>
+</ul>
       </section>
-
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/zimmeee">zimmeee</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    <script src="javascripts/scale.fix.js"></script>
     
   </body>
 </html>
